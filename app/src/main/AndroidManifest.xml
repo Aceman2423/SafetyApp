@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ContactsPage"
-            android:label="@string/title_activity_contacts_page"
+            android:name=".add_contact"
+            android:label="@string/title_activity_add_contact"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
+            android:name=".ContactsPage"
+            android:label="@string/title_activity_contacts_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"

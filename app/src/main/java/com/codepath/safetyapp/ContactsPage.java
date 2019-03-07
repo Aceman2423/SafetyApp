@@ -37,6 +37,15 @@ public class ContactsPage extends AppCompatActivity {
             }
         });
 
+        Button addC = findViewById(R.id.page_add_contacts_button);
+
+        addC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( new Intent( ContactsPage.this, add_contact.class));
+            }
+        });
+
     }
 
 }

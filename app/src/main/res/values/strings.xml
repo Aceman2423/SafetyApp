@@ -12,4 +12,7 @@
     <string name="back_home">Back</string>
     <string name="Contact_title">Contacts Page</string>
     <string name="title_activity_contacts_page">ContactsPage</string>
+    <string name="title_activity_add_contact">add_contact</string>
+    <string name="add_contact">New Contact</string>
+    <string name="enter_new_contact">Enter New Contact</string>
 </resources>
