@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         textLOL.setVisibility(View.INVISIBLE);
 
-        ContactBtn.setOnClickListener(new View.OnClickListener() {
+        ContactBtn.setOnClickListener(   new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

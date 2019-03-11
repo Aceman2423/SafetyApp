@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class add_contact extends AppCompatActivity {
 
-    String name, email;
+    String name = " ", email = " ";
     TextView t1;
 
     EditText nameInput;
@@ -35,9 +35,8 @@ public class add_contact extends AppCompatActivity {
                 name = nameInput.getText().toString();
                 email = emailInput.getText().toString();
 
-                t1.setText("Prints if added successfully\n" + name + "\n" + email + "\n");
-                t1.setVisibility(View.VISIBLE);
-
+                    t1.setText("Prints name and email if added successfully\n" + name + "\n" + email + "\n");
+                    t1.setVisibility(View.VISIBLE);
             }
         });
 
