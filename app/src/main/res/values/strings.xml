@@ -24,9 +24,8 @@
 <string name="name">Name</string>
 <string name="phone">Phone</string>
 <string name="email">Email</string>
-<string name="place">Place</string>
+<string name="Location">Location</string>
     <string name="id">ID</string>
-<string name="country">City/State/Zip</string>
 <string name="save">Save Contact</string>
 <string name="deleteContact">Are you sure, you want to delete it.</string>
 <string name="yes">Yes</string>

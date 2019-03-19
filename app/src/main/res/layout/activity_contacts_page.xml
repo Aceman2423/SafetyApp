@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/editTextEmail"
             android:layout_alignLeft="@+id/textView5"
-            android:text="@string/place"
+            android:text="@string/id"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -99,7 +99,7 @@
             android:layout_alignBottom="@+id/editTextLocation"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/editTextEmail"
-            android:text="@string/country"
+            android:text="@string/Location"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
