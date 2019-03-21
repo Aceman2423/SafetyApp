@@ -1,39 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
 
+    //SafteyNet Application Banner
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SafetyNet Application"
-        android:id="@+id/textView2"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:textSize="35dp"
-        android:textColor="#000000" />
+        android:text="SafetyNet Application"
+        android:textColor="#000000"
+        android:textSize="35dp" />
 
-    <ScrollView
+    //experimenting with start/stop recording and play/stopplay
+    <Button
+        android:id="@+id/btnStartRecord"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="RECORD" />
+    <Button
+        android:id= "@+id/btnStopRecord"
+        android:text="STOP RECORD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnPlayRecording"
+        android:text="PLAY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnStopPlaying"
+        android:text="STOP PLAYING"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
         android:id="@+id/scrollView"
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentBottom="true">
 
         <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" >
-        </ListView>
+            android:layout_centerVertical="true"></ListView>
 
     </ScrollView>
-</RelativeLayout>
+
+</LinearLayout>
