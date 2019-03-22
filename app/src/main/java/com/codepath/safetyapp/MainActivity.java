@@ -52,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer ;
+
     final int REQUEST_PERMISSION_CODE = 1000;
 
     //public static final int RequestPermissionCode = 1;
-    //private ListView obj;
+    private ListView obj;
     DBHelper mydb;
 
     @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //-----------------------DataBase Code------------------------------
         mydb = new DBHelper(this);
         ArrayList array_list = mydb.getAllContacts();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array_list);
@@ -92,13 +94,11 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions();
 
         //inital view
-        btnStartRecord =  findViewById(R.id.btnStartRecord);
-        btnStopRecord =  findViewById(R.id.btnStopRecord);
-        btnPlayRecording =  findViewById(R.id.btnPlayRecording);
-        btnStopPlaying = findViewById(R.id.btnStopPlaying);
+        btnStartRecord   =  (Button)findViewById(R.id.btnStartRecord);
+        btnStopRecord    =  (Button)findViewById(R.id.btnStopRecord);
+        btnPlayRecording =  (Button)findViewById(R.id.btnPlayRecording);
+        btnStopPlaying   =  (Button)findViewById(R.id.btnStopPlaying);
 
-
-        //need to request Run-time permission from Android M
 
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     btnPlayRecording.setEnabled(false);
                     btnStopPlaying.setEnabled(false);
+
 
                     Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
                 } else {
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 btnStopPlaying.setEnabled(true);
                 btnStopRecord.setEnabled(false);
                 btnStartRecord.setEnabled(false);
+                btnPlayRecording.setEnabled(false);
 
                 mediaPlayer = new MediaPlayer();
                 try {
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        btnStopRecord.setOnClickListener(new View.OnClickListener() {
+        btnStopPlaying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 btnStopRecord.setEnabled(false);
@@ -166,16 +168,17 @@ public class MainActivity extends AppCompatActivity {
                 if (mediaPlayer != null) {
                     mediaPlayer.stop();
                     mediaPlayer.release();
+                    mediaPlayer = null;
                     setupMediaRecorder();
 
                 }
             }
         });
-    }
+    }//end OnCreate
 
 
 
-    //----------------EXPERIMENTING WITH AUDIO FILES "CHECKPERMISSION CLASS"
+    //-----------------------EXPERIMENTING WITH AUDIO FILES---------------------------
     private void setupMediaRecorder() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -211,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }//ench checkPermissionFrom Device
     //------------------------------------------------------------------------------
 
-
+    //-------------------------------DataBase Code----------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -269,66 +272,5 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mydb = new DBHelper(this);
-        ArrayList array_list = mydb.getAllContacts();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array_list);
-
-        obj = (ListView) findViewById(R.id.listView1);
-        obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-
-                int id_To_Search = arg2 + 1;
-
-                Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", id_To_Search);
-
-                Intent intent = new Intent(getApplicationContext(), ContactsPage.class);
-
-                intent.putExtras(dataBundle);
-                startActivity(intent);
-            }
-        });
-
-
-        Button ContactBtn = findViewById(R.id.Contacts_page);
-        Button btn1 = findViewById(R.id.button1);
-        textLOL = findViewById(R.id.textView3);
-
-        textLOL.setVisibility(View.INVISIBLE);
-
-        ContactBtn.setOnClickListener(   new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(MainActivity.this, ContactsPage.class));
-            }
-        });
-
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ( textLOL.getVisibility() == View.VISIBLE ){
-                    textLOL.setVisibility(View.INVISIBLE);
-                }
-                else {
-                    textLOL.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-
-        mTextMessage = findViewById(R.id.message);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-    }
-    */
 
 }
