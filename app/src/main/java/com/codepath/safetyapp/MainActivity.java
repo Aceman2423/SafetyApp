@@ -1,7 +1,12 @@
 package com.codepath.safetyapp;
 
 import android.Manifest;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.widget.AdapterView;
@@ -48,10 +53,17 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Experimenting with buttons for recording
-    Button btnStartRecord,btnStopRecord, btnPlayRecording, btnStopPlaying;
+    Button btnStartRecord, btnStopRecord, btnPlayRecording, btnStopPlaying;
     String pathSave = "";
     MediaRecorder mediaRecorder;
-    MediaPlayer mediaPlayer ;
+    MediaPlayer mediaPlayer;
+    private Button button3;
+
+    //gps variables
+    private Button button, button4;
+    private TextView textView;
+    private LocationManager locationManager;
+    private LocationListener listener;
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
@@ -73,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         //public static final int RequestPermissionCode = 1;
         ListView obj = (ListView) findViewById(R.id.listView1);
         obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new OnItemClickListener(){
+        obj.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO Auto-generated method stub
@@ -94,10 +106,12 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions();
 
         //inital view
-        btnStartRecord   =  (Button)findViewById(R.id.btnStartRecord);
-        btnStopRecord    =  (Button)findViewById(R.id.btnStopRecord);
-        btnPlayRecording =  (Button)findViewById(R.id.btnPlayRecording);
-        btnStopPlaying   =  (Button)findViewById(R.id.btnStopPlaying);
+        btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
+        btnStopRecord = (Button) findViewById(R.id.btnStopRecord);
+        btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
+        btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
+
+
 
 
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
@@ -174,8 +188,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }//end OnCreate
 
+        //gps functionality
+
+        textView = (TextView) findViewById(R.id.textView);
+        button = (Button) findViewById(R.id.button);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                textView.append("n " + location.getLongitude() + " " + location.getLatitude());
+            }
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+            @Override
+            public void onProviderDisabled(String s) {
+
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+        configure_button();
+
+
+    }//end OnCreate
 
 
     //-----------------------EXPERIMENTING WITH AUDIO FILES---------------------------
@@ -191,13 +236,13 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO
-        },REQUEST_PERMISSION_CODE);
+        }, REQUEST_PERMISSION_CODE);
     }//end requestPermission
 
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int [] grantResults){
-        switch (requestCode){
-            case REQUEST_PERMISSION_CODE:{
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show();
@@ -210,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int record_audio_result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
-                         record_audio_result == PackageManager.PERMISSION_GRANTED;
+                record_audio_result == PackageManager.PERMISSION_GRANTED;
     }//ench checkPermissionFrom Device
     //------------------------------------------------------------------------------
 
@@ -271,6 +316,46 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    // GPS methods
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 10:
+                configure_button();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void configure_button() {
+        // first check for permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
+                        , 10);
+            }
+            return;
+        }
+        // this code won'textView execute IF permissions are not allowed, because in the line above there is return statement.
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                try {
+                    locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+                } catch (SecurityException ex) {
+
+                }
+
+            }
+        });
+    }
 
 
 }
