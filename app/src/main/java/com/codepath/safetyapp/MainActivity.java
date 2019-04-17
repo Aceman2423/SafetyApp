@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-//import java.util.List;
+import java.util.*;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     private Button button3;
+
+    //timer variables
+    long startTime = 0;
+    long maxTime = 5000; //3 seconds
 
     //gps variables
     private Button button, button4;
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         //inital view
         btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
-        btnStopRecord = (Button) findViewById(R.id.btnStopRecord);
+        //btnStopRecord = (Button) findViewById(R.id.btnStopRecord);
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
         btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
 
@@ -119,28 +124,42 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (checkPermissionFromDevice()) {
 
-
                     pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                             + UUID.randomUUID().toString() + "_audio_record.3gp";
                     setupMediaRecorder();
                     try {
                         mediaRecorder.prepare();
                         mediaRecorder.start();
+
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    btnPlayRecording.setEnabled(false);
-                    btnStopPlaying.setEnabled(false);
+                    //btnPlayRecording.setEnabled(true);
+                    //btnStopPlaying.setEnabled(true);
+                    //startTime = System.currentTimeMillis();
+                    //Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
 
-
-                    Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //System.out.print("This works");
+                            mediaRecorder.stop();
+                        }
+                    },4000);
+                   //while(System.currentTimeMillis()-startTime <= maxTime){
+                    //delay(milliseconds)
+                    //}//end while
+                    Toast.makeText(MainActivity.this, "Start time was: " + startTime, Toast.LENGTH_LONG).show();
+                    //mediaRecorder.stop();
                 } else {
                     requestPermissions();
                 }//end else
             }
         });
 
-        btnStopRecord.setOnClickListener(new View.OnClickListener() {
+        /*btnStopRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mediaRecorder.stop();
@@ -149,14 +168,15 @@ public class MainActivity extends AppCompatActivity {
                 btnStartRecord.setEnabled(true);
                 btnStopPlaying.setEnabled(false);
             }
-        });
+        });*/
+
         btnPlayRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnStopPlaying.setEnabled(true);
-                btnStopRecord.setEnabled(false);
-                btnStartRecord.setEnabled(false);
-                btnPlayRecording.setEnabled(false);
+//                btnStopPlaying.setEnabled(true);
+//                btnStopRecord.setEnabled(false);
+//                btnStartRecord.setEnabled(false);
+//                btnPlayRecording.setEnabled(false);
 
                 mediaPlayer = new MediaPlayer();
                 try {
@@ -174,10 +194,10 @@ public class MainActivity extends AppCompatActivity {
         btnStopPlaying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnStopRecord.setEnabled(false);
-                btnStartRecord.setEnabled(true);
-                btnStopPlaying.setEnabled(false);
-                btnPlayRecording.setEnabled(true);
+//                btnStopRecord.setEnabled(false);
+//                btnStartRecord.setEnabled(true);
+//                btnStopPlaying.setEnabled(false);
+//                btnPlayRecording.setEnabled(true);
 
                 if (mediaPlayer != null) {
                     mediaPlayer.stop();
