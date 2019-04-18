@@ -12,17 +12,8 @@
     tools:context=".MainActivity">
 
     //SafteyNet Application Banner
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:text="SafetyNet Application"
-        android:textColor="#000000"
-        android:textSize="35dp" />
+    //experimenting with start/stop recording and play/stop play
 
-    //experimenting with start/stop recording and play/stopplay
     <Button
         android:id="@+id/btnStartRecord"
         style="@style/Widget.AppCompat.Button"

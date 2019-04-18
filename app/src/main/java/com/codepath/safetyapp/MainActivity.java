@@ -54,15 +54,14 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Experimenting with buttons for recording
-    Button btnStartRecord, btnStopRecord, btnPlayRecording, btnStopPlaying;
+    Button btnStartRecord, btnPlayRecording, btnStopPlaying;
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     private Button button3;
 
     //timer variables
-    long startTime = 0;
-    long maxTime = 5000; //3 seconds
+    long maxTime = 5000;   //time in milliseconds for our delay
 
     //gps variables
     private Button button, button4;
@@ -116,9 +115,6 @@ public class MainActivity extends AppCompatActivity {
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
         btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
 
-
-
-
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,45 +126,38 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         mediaRecorder.prepare();
                         mediaRecorder.start();
-
-
-
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) {
                         e.printStackTrace();
                     }
                     //btnPlayRecording.setEnabled(true);
                     //btnStopPlaying.setEnabled(true);
-                    //startTime = System.currentTimeMillis();
-                    //Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
 
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            //System.out.print("This works");
+                            //this is performed after the delay
                             mediaRecorder.stop();
                         }
-                    },4000);
-                   //while(System.currentTimeMillis()-startTime <= maxTime){
-                    //delay(milliseconds)
-                    //}//end while
-                    Toast.makeText(MainActivity.this, "Start time was: " + startTime, Toast.LENGTH_LONG).show();
-                    //mediaRecorder.stop();
+                    }, maxTime);   //maxTime = our delay time
+
                 } else {
                     requestPermissions();
                 }//end else
             }
         });
 
-        /*btnStopRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaRecorder.stop();
-                btnStopRecord.setEnabled(false);
-                btnPlayRecording.setEnabled(true);
-                btnStartRecord.setEnabled(true);
-                btnStopPlaying.setEnabled(false);
-            }
-        });*/
+//        btnStopRecord.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mediaRecorder.stop();
+//                btnStopRecord.setEnabled(false);
+//                btnPlayRecording.setEnabled(true);
+//                btnStartRecord.setEnabled(true);
+//                btnStopPlaying.setEnabled(false);
+//            }
+//        });
 
         btnPlayRecording.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //gps functionality
+        //-----------------------------GPS functionality------------------------------
 
         textView = (TextView) findViewById(R.id.textView);
         button = (Button) findViewById(R.id.button);
@@ -277,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
         return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
                 record_audio_result == PackageManager.PERMISSION_GRANTED;
     }//ench checkPermissionFrom Device
-    //------------------------------------------------------------------------------
 
     //-------------------------------DataBase Code----------------------------------
     @Override
@@ -337,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    // GPS methods
+    //-----------------------------GPS methods--------------------------------
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
