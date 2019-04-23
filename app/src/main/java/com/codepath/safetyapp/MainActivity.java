@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         // this code won'textView execute IF permissions are not allowed, because in the line above there is return statement.
-        button.setOnClickListener(new View.OnClickListener() {
+        btnStartRecord.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
