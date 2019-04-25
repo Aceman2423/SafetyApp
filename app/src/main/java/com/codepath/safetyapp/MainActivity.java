@@ -115,39 +115,6 @@ public class MainActivity extends AppCompatActivity {
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
         btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
 
-        btnStartRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkPermissionFromDevice()) {
-
-                    pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                            + UUID.randomUUID().toString() + "_audio_record.3gp";
-                    setupMediaRecorder();
-                    try {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    //btnPlayRecording.setEnabled(true);
-                    //btnStopPlaying.setEnabled(true);
-                    Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
-
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            //this is performed after the delay
-                            mediaRecorder.stop();
-                        }
-                    }, maxTime);   //maxTime = our delay time
-
-                } else {
-                    requestPermissions();
-                }//end else
-            }
-        });
-
 //        btnStopRecord.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -350,18 +317,46 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
         }
-        // this code won'textView execute IF permissions are not allowed, because in the line above there is return statement.
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                try {
-                    locationManager.requestLocationUpdates("gps", 5000, 0, listener);
-                } catch (SecurityException ex) {
+                if (checkPermissionFromDevice()) {
 
-                }
+                    pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                            + UUID.randomUUID().toString() + "_audio_record.3gp";
+                    setupMediaRecorder();
+                    try {
+                        mediaRecorder.prepare();
+                        mediaRecorder.start();
 
-            }
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        locationManager.requestLocationUpdates("gps", 1000, 0, listener);
+                    } catch (SecurityException ex){
+
+                    }//end catch
+                    //btnPlayRecording.setEnabled(true);
+                    //btnStopPlaying.setEnabled(true);
+                    Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
+
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //this is performed after the delay
+                            mediaRecorder.stop();
+                        }
+                    }, maxTime);   //maxTime = our delay time
+
+                } else {
+                    requestPermissions();
+                }//end else
+            }//end on click
         });
     }
 
