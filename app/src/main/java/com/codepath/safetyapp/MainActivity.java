@@ -6,50 +6,31 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.*;
-
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.Menu;
-
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-
 import android.os.Environment;
-
-
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.io.IOException;
-//import java.util.Random;
 import java.util.UUID;
-
-//import static android.Manifest.permission.RECORD_AUDIO;
-//import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
-
 import android.widget.TextView;
-
 import android.content.Intent;
-//import android.content.Context;
-//import android.content.Intent;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
-    private Button button3;
     private boolean onceOver = true;
 
     //timer variables
@@ -87,54 +67,19 @@ public class MainActivity extends AppCompatActivity {
         ArrayList array_list = mydb.getAllContacts();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array_list);
 
-/*
-        //public static final int RequestPermissionCode = 1;
-        ListView obj = (ListView) findViewById(R.id.listView1);
-        obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // TODO Auto-generated method stub
-                int id_To_Search = arg2 + 1;
 
-                Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", id_To_Search);
-
-                Intent intent = new Intent(getApplicationContext(), ContactsPage.class);
-
-                intent.putExtras(dataBundle);
-                startActivity(intent);
-            }
-        });
-*/
         //-------------------EXPERIMENTING WITH AUDIO FILES-------------------------------
         if (!checkPermissionFromDevice())
             requestPermissions();
 
         //inital view
         btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
-        //btnStopRecord = (Button) findViewById(R.id.btnStopRecord);
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
         btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
-
-//        btnStopRecord.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mediaRecorder.stop();
-//                btnStopRecord.setEnabled(false);
-//                btnPlayRecording.setEnabled(true);
-//                btnStartRecord.setEnabled(true);
-//                btnStopPlaying.setEnabled(false);
-//            }
-//        });
 
         btnPlayRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                btnStopPlaying.setEnabled(true);
-//                btnStopRecord.setEnabled(false);
-//                btnStartRecord.setEnabled(false);
-//                btnPlayRecording.setEnabled(false);
 
                 mediaPlayer = new MediaPlayer();
                 try {
@@ -152,10 +97,6 @@ public class MainActivity extends AppCompatActivity {
         btnStopPlaying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                btnStopRecord.setEnabled(false);
-//                btnStartRecord.setEnabled(true);
-//                btnStopPlaying.setEnabled(false);
-//                btnPlayRecording.setEnabled(true);
 
                 if (mediaPlayer != null) {
                     mediaPlayer.stop();
@@ -199,9 +140,10 @@ public class MainActivity extends AppCompatActivity {
                         EastOrWest = 'w';
                     }
                     //this txt view if for debugging purposes
-                    textView.append("   http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
+                    textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
                     onceOver = false;
                     sendableLocation = "   http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest;
+
                 }
             }
             @Override
@@ -363,12 +305,10 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     try {
-                        locationManager.requestLocationUpdates("gps", 1000, 0, listener);
+                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
                     } catch (SecurityException ex){
 
                     }//end catch
-                    //btnPlayRecording.setEnabled(true);
-                    //btnStopPlaying.setEnabled(true);
                     Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
 
                     new Timer().schedule(new TimerTask() {
@@ -376,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             //this is performed after the delay
                             mediaRecorder.stop();
+                            onceOver = true;
                         }
                     }, maxTime);   //maxTime = our delay time
 
