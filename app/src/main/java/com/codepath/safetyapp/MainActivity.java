@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
         //btnStopRecord = (Button) findViewById(R.id.btnStopRecord);
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
-        btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
+        //btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
 
 //        btnStopRecord.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -144,28 +144,41 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 mediaPlayer.start();
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //this is performed after the delay
+                        if (mediaPlayer != null) {
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                            setupMediaRecorder();
+                        }//end if
+                    }
+                }, maxTime);   //maxTime = our delay time
+
                 Toast.makeText(MainActivity.this, "Playing...", Toast.LENGTH_LONG).show();
             }
         });
 
 
-        btnStopPlaying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                btnStopRecord.setEnabled(false);
-//                btnStartRecord.setEnabled(true);
-//                btnStopPlaying.setEnabled(false);
-//                btnPlayRecording.setEnabled(true);
-
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                    setupMediaRecorder();
-
-                }
-            }
-        });
+//        btnStopPlaying.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                btnStopRecord.setEnabled(false);
+////                btnStartRecord.setEnabled(true);
+////                btnStopPlaying.setEnabled(false);
+////                btnPlayRecording.setEnabled(true);
+//
+//                if (mediaPlayer != null) {
+//                    mediaPlayer.stop();
+//                    mediaPlayer.release();
+//                    mediaPlayer = null;
+//                    setupMediaRecorder();
+//
+//                }
+//            }
+//        });
 
         //-----------------------------GPS functionality------------------------------
 
