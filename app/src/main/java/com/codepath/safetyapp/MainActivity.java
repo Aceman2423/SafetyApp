@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     private Button button3;
+    private boolean onceOver = true;
 
     //timer variables
     long maxTime = 5000;   //time in milliseconds for our delay
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private LocationManager locationManager;
     private LocationListener listener;
+    public String sendableLocation;
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList array_list = mydb.getAllContacts();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array_list);
 
-
+/*
         //public static final int RequestPermissionCode = 1;
         ListView obj = (ListView) findViewById(R.id.listView1);
         obj.setAdapter(arrayAdapter);
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+*/
         //-------------------EXPERIMENTING WITH AUDIO FILES-------------------------------
         if (!checkPermissionFromDevice())
             requestPermissions();
@@ -176,7 +178,31 @@ public class MainActivity extends AppCompatActivity {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                textView.append("n " + location.getLongitude() + " " + location.getLatitude());
+                if ( onceOver ) {
+                    double latitude;
+                    double longitude;
+                    char NorthOrSouth;
+                    char EastOrWest;
+                    if (location.getLatitude() > 0) {
+                        latitude = Math.abs(location.getLatitude());
+                        NorthOrSouth = 'n';
+                    } else {
+                        latitude = Math.abs(location.getLatitude());
+                        NorthOrSouth = 's';
+                    }
+
+                    if (location.getLongitude() > 0) {
+                        longitude = Math.abs(location.getLongitude());
+                        EastOrWest = 'e';
+                    } else {
+                        longitude = Math.abs(location.getLongitude());
+                        EastOrWest = 'w';
+                    }
+                    //this txt view if for debugging purposes
+                    textView.append("   http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
+                    onceOver = false;
+                    sendableLocation = "   http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest;
+                }
             }
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
