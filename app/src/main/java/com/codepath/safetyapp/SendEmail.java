@@ -1,5 +1,6 @@
 package com.codepath.safetyapp;
 
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -7,10 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 public class SendEmail extends AppCompatActivity {
     private EditText mEditTextTo;
     private EditText mEditTextSubject;
     private EditText mEditTextMessage;
+    public String sendableLocation;
+
+    //public String testString = "Hello";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +26,10 @@ public class SendEmail extends AppCompatActivity {
         mEditTextSubject = findViewById(R.id.edit_text_subject);
         mEditTextMessage = findViewById(R.id.edit_text_message);
 
-//        Button SendEmail = findViewById(R.id.btnSendEmail);
-//        SendEmail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+         sendableLocation = getIntent().getStringExtra("KEY");
+
+
         sendMail();
-//            }
-//        });
     }//end onCreate
 
     private void sendMail() {
@@ -40,9 +42,12 @@ public class SendEmail extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.putExtra(Intent.EXTRA_TEXT, (String) sendableLocation);
 
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));
     }
-}//end MainActivity
+
+
+
+}//end SendEmail

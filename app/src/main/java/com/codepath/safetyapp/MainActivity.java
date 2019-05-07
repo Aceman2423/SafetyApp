@@ -94,13 +94,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //------------------------Email Button----------------------
-        btnSendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SendEmail.class));
-
-            }
-        });
+//        btnSendEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                startActivity(new Intent(MainActivity.this,SendEmail.class));
+//
+//            }
+//        });
 
         //-----------------------------GPS functionality------------------------------
 
@@ -134,10 +135,12 @@ public class MainActivity extends AppCompatActivity {
                         EastOrWest = 'w';
                     }
                     //this txt view if for debugging purposes
-                    textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
+                    //textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
                     onceOver = false;
-                    sendableLocation = "   http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest;
-
+                    Intent intent = new Intent(MainActivity.this, SendEmail.class);
+                    sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest;
+                    intent.putExtra("KEY", sendableLocation);
+                    startActivity(intent);
                 }
             }
             @Override
