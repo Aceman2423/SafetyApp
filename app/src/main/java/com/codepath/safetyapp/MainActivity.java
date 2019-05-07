@@ -35,7 +35,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Experimenting with buttons for recording
-    Button btnStartRecord, btnPlayRecording, btnStopPlaying;
+    Button btnStartRecord, btnPlayRecording, btnSendEmail;
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //inital view
         btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
-        btnStopPlaying = (Button) findViewById(R.id.btnStopPlaying);
+        btnSendEmail = (Button) findViewById(R.id.btnSendEmail);
 
         btnPlayRecording.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,18 +93,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        btnStopPlaying.setOnClickListener(new View.OnClickListener() {
+        //------------------------Email Button----------------------
+        btnSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,SendEmail.class));
 
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                    setupMediaRecorder();
-
-                }
             }
         });
 
