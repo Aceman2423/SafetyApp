@@ -4,6 +4,7 @@ import android.Manifest;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,32 +102,27 @@ public class MainActivity extends AppCompatActivity {
                 }
                 mediaPlayer.start();
                 Toast.makeText(MainActivity.this, "Playing...", Toast.LENGTH_SHORT).show();
-                tsLong = System.currentTimeMillis();
 
-                DateFormat simple = new SimpleDateFormat("dd MMM yyyyy HH:mm:ss:SSS Z");
-                Date result = new Date(tsLong);
-                ts = simple.format(result);
-                tsString = tsLong.toString();
             }
         });
 
         //------------------------Email Button----------------------
-        btnSendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkPermissionFromDevice()) {
-                    try {
-                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
-                    }
-                    catch (SecurityException ex){
-
-                    }//end catch
-
-                } else {
-                    requestPermissions();
-                }//end else
-            }//end on click
-        });
+//        btnSendEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (checkPermissionFromDevice()) {
+//                    try {
+//                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
+//                    }
+//                    catch (SecurityException ex){
+//
+//                    }//end catch
+//
+//                } else {
+//                    requestPermissions();
+//                }//end else
+//            }//end on click
+//        });
 
         //-----------------------------GPS functionality------------------------------
 
@@ -165,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest + "\n";
                     intent.putExtra("KEY2", ts);
                     intent.putExtra("KEY1", sendableLocation);
+
                     startActivity(intent);
                 }
             }
@@ -323,6 +321,12 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
                         mediaRecorder.prepare();
                         mediaRecorder.start();
+                        tsLong = System.currentTimeMillis();
+
+                        DateFormat simple = new SimpleDateFormat("dd MMM yyyyy HH:mm:ss:SSS Z");
+                        Date result = new Date(tsLong);
+                        ts = simple.format(result);
+                        tsString = tsLong.toString();
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -334,7 +338,70 @@ public class MainActivity extends AppCompatActivity {
                             //this is performed after the delay
                             Toast.makeText(MainActivity.this, "Stopped Recording", Toast.LENGTH_SHORT).show();
                             mediaRecorder.stop();
-                            //onceOver = true;
+
+                            if (checkPermissionFromDevice()) {
+                                try {
+                                    locationManager.requestLocationUpdates("gps",1000, 1000, listener);
+                                }
+                                catch (SecurityException ex){
+
+                                }//end catch
+
+                            } else {
+                                requestPermissions();
+                            }//end else
+//                            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//                            listener = new LocationListener() {
+//                                @Override
+//                                public void onLocationChanged(Location location) {
+//                                    if ( onceOver ) {
+//                                        double latitude;
+//                                        double longitude;
+//                                        char NorthOrSouth;
+//                                        char EastOrWest;
+//                                        if (location.getLatitude() > 0) {
+//                                            latitude = Math.abs(location.getLatitude());
+//                                            NorthOrSouth = 'n';
+//                                        } else {
+//                                            latitude = Math.abs(location.getLatitude());
+//                                            NorthOrSouth = 's';
+//                                        }
+//
+//                                        if (location.getLongitude() > 0) {
+//                                            longitude = Math.abs(location.getLongitude());
+//                                            EastOrWest = 'e';
+//                                        } else {
+//                                            longitude = Math.abs(location.getLongitude());
+//                                            EastOrWest = 'w';
+//                                        }
+//                                        //this txt view if for debugging purposes
+//                                        //textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
+//                                        onceOver = false;
+//                                        Intent intent = new Intent(MainActivity.this, SendEmail.class);
+//                                        sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest + "\n";
+//                                        intent.putExtra("KEY2", ts);
+//                                        intent.putExtra("KEY1", sendableLocation);
+//
+//                                        startActivity(intent);
+//                                    }
+//                                }
+//                                @Override
+//                                public void onStatusChanged(String s, int i, Bundle bundle) {
+//
+//                                }
+//                                @Override
+//                                public void onProviderEnabled(String s) {
+//
+//                                }
+//                                @Override
+//                                public void onProviderDisabled(String s) {
+//
+//                                    Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                                    startActivity(i);
+//                                }
+//                            };
+//
                         }
                     }, maxTime);   //maxTime = our delay time
 

@@ -44,7 +44,7 @@ public class SendEmail extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, sendableLocation +  "\n\n" + ts);
+        intent.putExtra(Intent.EXTRA_TEXT,  "This event occured at: " + "\n" + ts +  "\n\n" + sendableLocation);
         //intent.putExtra(Intent.EXTRA_TEXT, ts);
 
         intent.setType("message/rfc822");
