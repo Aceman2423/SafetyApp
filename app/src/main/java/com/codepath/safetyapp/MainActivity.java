@@ -12,6 +12,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.*;
 import android.support.v7.app.AppCompatActivity;
@@ -33,14 +36,20 @@ import android.widget.TextView;
 import android.content.Intent;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
     //Experimenting with buttons for recording
     Button btnStartRecord, btnPlayRecording, btnSendEmail;
-    String pathSave = "";
+    //String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     private boolean onceOver = true;
+    public String outputFile = "";
+    public Long tsLong;
+    public String ts = "";
+    public String tsString = "";
+
 
     //timer variables
     long maxTime = 5000;   //time in milliseconds for our delay
@@ -84,22 +93,19 @@ public class MainActivity extends AppCompatActivity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(pathSave);
+                    mediaPlayer.setDataSource(outputFile);
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 mediaPlayer.start();
-
                 Toast.makeText(MainActivity.this, "Playing...", Toast.LENGTH_SHORT).show();
-//                new Handler().postDelayed(new Runnable(){
-//                    @Override
-//                    public void run() {
-//                        //this is performed after the delay
-//                        mediaPlayer.stop();
-//                        Toast.makeText(MainActivity.this, "End of Recording", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, (maxTime + 2000));   //maxTime = our delay time
+                tsLong = System.currentTimeMillis();
+
+                DateFormat simple = new SimpleDateFormat("dd MMM yyyyy HH:mm:ss:SSS Z");
+                Date result = new Date(tsLong);
+                ts = simple.format(result);
+                tsString = tsLong.toString();
             }
         });
 
@@ -156,8 +162,9 @@ public class MainActivity extends AppCompatActivity {
                     //textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
                     onceOver = false;
                     Intent intent = new Intent(MainActivity.this, SendEmail.class);
-                    sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest;
-                    intent.putExtra("KEY", sendableLocation);
+                    sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest + "\n";
+                    intent.putExtra("KEY2", ts);
+                    intent.putExtra("KEY1", sendableLocation);
                     startActivity(intent);
                 }
             }
@@ -178,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         };
         configure_button();
 
+        //---------------------Trying to save audio file-------------------------
 
     }//end OnCreate
 
@@ -188,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(pathSave);
+        mediaRecorder.setOutputFile(outputFile);
     }//setupMediaRecorder
 
     private void requestPermissions() {
@@ -307,8 +315,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (checkPermissionFromDevice()) {
 
-                    pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                            + UUID.randomUUID().toString() + "_audio_record.3gp";
+                    outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()  + "/" + tsString + "_audio_record.3gp";
+                    //pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                    //        + UUID.randomUUID().toString() + "_audio_record.3gp";
                     setupMediaRecorder();
                     try {
                         Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
@@ -318,9 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
-
+                    //delay to automatically stop recording
                     new Handler().postDelayed(new Runnable(){
                         @Override
                         public void run() {

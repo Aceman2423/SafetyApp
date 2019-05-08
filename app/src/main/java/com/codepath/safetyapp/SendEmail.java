@@ -14,6 +14,7 @@ public class SendEmail extends AppCompatActivity {
     private EditText mEditTextSubject;
     private EditText mEditTextMessage;
     public String sendableLocation;
+    public String ts;
 
     //public String testString = "Hello";
 
@@ -26,7 +27,8 @@ public class SendEmail extends AppCompatActivity {
         mEditTextSubject = findViewById(R.id.edit_text_subject);
         mEditTextMessage = findViewById(R.id.edit_text_message);
 
-         sendableLocation = getIntent().getStringExtra("KEY");
+         sendableLocation = getIntent().getStringExtra("KEY1");
+         ts = getIntent().getStringExtra("KEY2");
 
 
         sendMail();
@@ -42,7 +44,8 @@ public class SendEmail extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, (String) sendableLocation);
+        intent.putExtra(Intent.EXTRA_TEXT, sendableLocation +  "\n\n" + ts);
+        //intent.putExtra(Intent.EXTRA_TEXT, ts);
 
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));
