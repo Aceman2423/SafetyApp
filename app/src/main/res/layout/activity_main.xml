@@ -20,11 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RECORD" />
-    <!--<Button-->
-    <!--android:id= "@+id/btnStopRecord"-->
-    <!--android:text="STOP RECORD"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
+
     <Button
         android:id="@+id/btnPlayRecording"
         android:text="PLAY"
@@ -37,16 +33,16 @@
         android:layout_height="wrap_content" />
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="center"
-        android:text="Coordinates: "
-        android:textSize="30sp" />
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/button"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Coordinates: "-->
+        <!--android:textSize="30sp" />-->
 
 
 </LinearLayout>

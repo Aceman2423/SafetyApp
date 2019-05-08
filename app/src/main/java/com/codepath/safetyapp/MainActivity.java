@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     long maxTime = 5000;   //time in milliseconds for our delay
 
     //gps variables
-    private Button button, button4;
-    private TextView textView;
+    //private Button button, button4;
+    //private TextView textView;
     private LocationManager locationManager;
     private LocationListener listener;
     public String sendableLocation;
@@ -89,7 +90,16 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 mediaPlayer.start();
-                Toast.makeText(MainActivity.this, "Playing...", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(MainActivity.this, "Playing...", Toast.LENGTH_SHORT).show();
+//                new Handler().postDelayed(new Runnable(){
+//                    @Override
+//                    public void run() {
+//                        //this is performed after the delay
+//                        mediaPlayer.stop();
+//                        Toast.makeText(MainActivity.this, "End of Recording", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, (maxTime + 2000));   //maxTime = our delay time
             }
         });
 
@@ -113,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
         //-----------------------------GPS functionality------------------------------
 
-        textView = (TextView) findViewById(R.id.textView);
-        button = (Button) findViewById(R.id.button);
+        //textView = (TextView) findViewById(R.id.textView);
+        //button = (Button) findViewById(R.id.button);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -301,22 +311,23 @@ public class MainActivity extends AppCompatActivity {
                             + UUID.randomUUID().toString() + "_audio_record.3gp";
                     setupMediaRecorder();
                     try {
+                        Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
                         mediaRecorder.prepare();
                         mediaRecorder.start();
-
                     }
                     catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
 
-                    new Timer().schedule(new TimerTask() {
+
+                    new Handler().postDelayed(new Runnable(){
                         @Override
                         public void run() {
                             //this is performed after the delay
+                            Toast.makeText(MainActivity.this, "Stopped Recording", Toast.LENGTH_SHORT).show();
                             mediaRecorder.stop();
-                            onceOver = true;
+                            //onceOver = true;
                         }
                     }, maxTime);   //maxTime = our delay time
 
