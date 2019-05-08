@@ -94,14 +94,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //------------------------Email Button----------------------
-//        btnSendEmail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                startActivity(new Intent(MainActivity.this,SendEmail.class));
-//
-//            }
-//        });
+        btnSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkPermissionFromDevice()) {
+                    try {
+                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
+                    }
+                    catch (SecurityException ex){
+
+                    }//end catch
+
+                } else {
+                    requestPermissions();
+                }//end else
+            }//end on click
+        });
 
         //-----------------------------GPS functionality------------------------------
 
@@ -301,11 +309,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    try {
-                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
-                    } catch (SecurityException ex){
-
-                    }//end catch
                     Toast.makeText(MainActivity.this, "Recording...", Toast.LENGTH_LONG).show();
 
                     new Timer().schedule(new TimerTask() {
