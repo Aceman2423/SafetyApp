@@ -294,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     void configure_button() {
         // first check for permissions
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
