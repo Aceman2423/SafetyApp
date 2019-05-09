@@ -42,7 +42,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     //Experimenting with buttons for recording
-    Button btnStartRecord, btnPlayRecording, btnSendEmail;
+    Button btnStartRecord, btnPlayRecording;
     //String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //timer variables
-    long maxTime = 5000;   //time in milliseconds for our delay
+    long maxTime = 60000;   //time in milliseconds for our delay
 
     //gps variables
     //private Button button, button4;
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         //inital view
         btnStartRecord = (Button) findViewById(R.id.btnStartRecord);
         btnPlayRecording = (Button) findViewById(R.id.btnPlayRecording);
-        btnSendEmail = (Button) findViewById(R.id.btnSendEmail);
 
         btnPlayRecording.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,28 +105,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //------------------------Email Button----------------------
-//        btnSendEmail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (checkPermissionFromDevice()) {
-//                    try {
-//                        locationManager.requestLocationUpdates("gps",1000, 1000, listener);
-//                    }
-//                    catch (SecurityException ex){
-//
-//                    }//end catch
-//
-//                } else {
-//                    requestPermissions();
-//                }//end else
-//            }//end on click
-//        });
-
         //-----------------------------GPS functionality------------------------------
 
-        //textView = (TextView) findViewById(R.id.textView);
-        //button = (Button) findViewById(R.id.button);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -351,58 +330,6 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 requestPermissions();
                             }//end else
-//                            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//
-//                            listener = new LocationListener() {
-//                                @Override
-//                                public void onLocationChanged(Location location) {
-//                                    if ( onceOver ) {
-//                                        double latitude;
-//                                        double longitude;
-//                                        char NorthOrSouth;
-//                                        char EastOrWest;
-//                                        if (location.getLatitude() > 0) {
-//                                            latitude = Math.abs(location.getLatitude());
-//                                            NorthOrSouth = 'n';
-//                                        } else {
-//                                            latitude = Math.abs(location.getLatitude());
-//                                            NorthOrSouth = 's';
-//                                        }
-//
-//                                        if (location.getLongitude() > 0) {
-//                                            longitude = Math.abs(location.getLongitude());
-//                                            EastOrWest = 'e';
-//                                        } else {
-//                                            longitude = Math.abs(location.getLongitude());
-//                                            EastOrWest = 'w';
-//                                        }
-//                                        //this txt view if for debugging purposes
-//                                        //textView.append("\nhttp://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest);
-//                                        onceOver = false;
-//                                        Intent intent = new Intent(MainActivity.this, SendEmail.class);
-//                                        sendableLocation = "http://maps.google.com/?q=" + latitude + NorthOrSouth + "," + longitude + EastOrWest + "\n";
-//                                        intent.putExtra("KEY2", ts);
-//                                        intent.putExtra("KEY1", sendableLocation);
-//
-//                                        startActivity(intent);
-//                                    }
-//                                }
-//                                @Override
-//                                public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//                                }
-//                                @Override
-//                                public void onProviderEnabled(String s) {
-//
-//                                }
-//                                @Override
-//                                public void onProviderDisabled(String s) {
-//
-//                                    Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                                    startActivity(i);
-//                                }
-//                            };
-//
                         }
                     }, maxTime);   //maxTime = our delay time
 
